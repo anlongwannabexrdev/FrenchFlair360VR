@@ -2,20 +2,16 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
 
 public class SpeechToText : MonoBehaviour
 {
+    public event System.Action<string> onDetectSpeech;
+
     private string apiKey = "AIzaSyAoE9FrwmIzmclz0wOlxhpv-dSUEL727ok";
     private string apiUrl = "https://speech.googleapis.com/v1/speech:recognize?key=";
 
-    public AudioClip recordedClip;
-
-    void Start()
-    {
-        SendAudio(AudioConverter.ConvertAudioClipToByteArray(recordedClip));
-    }
-
-    public void SendAudio(byte[] audioData)
+    public void Convert(byte[] audioData)
     {
         StartCoroutine(PostAudio(audioData));
     }
@@ -35,7 +31,16 @@ public class SpeechToText : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Speech-to-Text Response: " + www.downloadHandler.text);
+                string response = www.downloadHandler.text;
+                try 
+                {
+                    var result = JObject.Parse(response)["results"][0]["alternatives"][0]["transcript"].ToString();
+                    onDetectSpeech?.Invoke(result);
+                }
+                catch
+                {
+                    Debug.Log("Can't convert Speech to text");
+                }                
             }
             else
             {

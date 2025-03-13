@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -9,24 +8,24 @@ using System.Linq;
 
 public class ChatBot : MonoBehaviour
 {
+    public event System.Action<string> onRespond;
+
     private static readonly string apiKey = "cWsTC69JOYww85MTy0xV7Ii5k79onrpn";
     private static readonly string apiUrl = "https://api.mistral.ai/v1/chat/completions";
 
-    public TextToSpeech textToSpeech;
-
-    void Start()
+    public void AskToBot(string prompt)
     {
-        StartCoroutine(GetMistralResponse("Xin chào, bạn khỏe không?"));
+        StartCoroutine(GetMistralResponse(prompt));
     }
 
     IEnumerator GetMistralResponse(string prompt)
     {
         var requestData = new
         {
-            model = "mistral-7b",
+            model = "open-mistral-7b",
             messages = new[]
             {
-                new { role = "assistant", content = "You are NPC, answer not over 10 word." },
+                new { role = "assistant", content = "You are NPC, the answer just less than 10 words" },
                 new { role = "user", content = prompt }
             },
             temperature = 0.7
@@ -46,18 +45,21 @@ public class ChatBot : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string response = request.downloadHandler.text;
+            Debug.Log("Bot Response: " + response);
+            try
+            {
+                response = (from item in JObject.Parse(response)["choices"] select item!["message"]!["content"]!).FirstOrDefault().ToString();
+                onRespond?.Invoke(response);
+            }
+            catch
+            {
+                Debug.LogError("Can't convert reponse from AI");
+            }
 
-            Debug.Log("Mistral Response: " + response);
-
-            response = (from item in JObject.Parse(response)["choices"] select item!["message"]!["content"]!).FirstOrDefault().ToString();
-
-            Debug.Log("Mistral Response: " + response);
-
-            textToSpeech.SpeechText(response);
         }
         else
         {
-            Debug.LogError("Lỗi: " + request.error);
+            Debug.LogError("Bot Error: " + request.error);
         }
     }
 }
