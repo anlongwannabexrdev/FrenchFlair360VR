@@ -1,21 +1,24 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Text;
 using UnityEngine.Networking;
 using System.IO;
-using Convai.Scripts.Runtime.Extensions;
 
 public class TextToSpeech : MonoBehaviour
 {
     private string apiKey = "sk_6cb7b6633da184efa4481329ccf50c17c522636d6a046b1a";
     private string apiUrl = "https://api.elevenlabs.io/v1/text-to-speech/";
     private string voiceId = "EXAVITQu4vr4xnSDxMaL"; // Voice ID (ElevenLabs)
+    public AudioSource AudioSource;
+    private Action onFinishPlay;
     
-    public void SpeechText(string textToConvert)
+    public void SpeechText(string textToConvert,Action callback)
     {
+        this.onFinishPlay = callback;
         StartCoroutine(GenerateSpeech(textToConvert));
     }
-
+    
     IEnumerator GenerateSpeech(string textToConvert)
     {
         var stopwatch = new System.Diagnostics.Stopwatch();
@@ -67,14 +70,26 @@ public class TextToSpeech : MonoBehaviour
                 AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
                 if (clip != null)
                 {
-                    AudioSource audioSource = gameObject.GetOrAddComponent<AudioSource>();
-                    audioSource.clip = clip;
-                    audioSource.Play();
+                    Debug.Log("Clip loaded - Length: " + clip.length + ", Samples: " + clip.samples);
+                    if (AudioSource == null)
+                    {
+                        AudioSource = gameObject.AddComponent<AudioSource>();
+                    }
+                    AudioSource.clip = clip;
+                    AudioSource.mute = false;
+                    AudioSource.volume = 1.0f;
+                    Debug.Log("Volume: " + AudioSource.volume + ", Muted: " + AudioSource.mute);
+                    AudioSource.Play();
+                    Debug.Log("Playing: " + AudioSource.isPlaying);
                     Debug.Log("Playing from ElevenLabs!");
+                    gameObject.DelayCall(AudioSource.time, (() =>
+                    {
+                        onFinishPlay?.Invoke();
+                    }));
                 }
                 else
                 {
-                    Debug.LogError("Can't create AudioClip from response!");
+                    Debug.LogError("Can't create AudioClip from response! Data length: " + www.downloadHandler.data.Length);
                 }
             }
             else

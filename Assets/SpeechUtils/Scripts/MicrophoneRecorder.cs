@@ -9,11 +9,15 @@ public class MicrophoneRecorder : MonoBehaviour
     
     private AudioClip recordedClip;
     private const int sampleRate = 16000;
-
+    [SerializeField]
     private SpeechToSpeech speechToSpeech;
+    [SerializeField]
     private SpeechToElevenLab speechToTextElevenLab;
+    [SerializeField]
     private SpeechToText speechToText;
+    [SerializeField]
     private TextToSpeech textToSpeech;
+    [SerializeField]
     private ChatBot chatBot;
 
     void Start()
@@ -36,7 +40,7 @@ public class MicrophoneRecorder : MonoBehaviour
 
         chatBot.onRespond += (response) =>
         {
-            textToSpeech.SpeechText(response);
+            textToSpeech.SpeechText(response,null);
         };
     }
 

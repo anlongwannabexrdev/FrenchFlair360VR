@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 public class SpeechToText : MonoBehaviour
 {
-    public event System.Action<string> onDetectSpeech;
+    public System.Action<string> onDetectSpeech;
 
     private string apiKey = "AIzaSyAoE9FrwmIzmclz0wOlxhpv-dSUEL727ok";
     private string apiUrl = "https://speech.googleapis.com/v1/speech:recognize?key=";
