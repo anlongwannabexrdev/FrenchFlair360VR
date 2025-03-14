@@ -1,15 +1,13 @@
 using UnityEngine;
 using System.Collections;
-using System.Text;
 using UnityEngine.Networking;
-using Newtonsoft.Json.Linq;
 
-public class SpeechToText : MonoBehaviour
+public class SpeechToElevenLab : MonoBehaviour
 {
     public event System.Action<string> onDetectSpeech;
 
     private string apiKey = "AIzaSyAoE9FrwmIzmclz0wOlxhpv-dSUEL727ok";
-    private string apiUrl = "https://speech.googleapis.com/v1/speech:recognize?key=";
+    private string apiUrl = "https://api.elevenlabs.io/v1/speech-to-text";
 
     public void Convert(AudioClip audioClip)
     {
@@ -19,38 +17,31 @@ public class SpeechToText : MonoBehaviour
 
     IEnumerator PostAudio(byte[] audioData)
     {
-        string json = "{\"config\": {\"encoding\":\"LINEAR16\",\"sampleRateHertz\":16000,\"languageCode\":\"en-US\"},\"audio\": {\"content\": \"" + System.Convert.ToBase64String(audioData) + "\"}}";
-
         var stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
+        
+        var form = new WWWForm();
+        form.AddBinaryData("file", audioData, "file1.wav", "audio/wav");
+        form.AddField("model_id", "scribe_v1");
 
-        using var request = new UnityWebRequest(apiUrl + apiKey, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
+        using var request = UnityWebRequest.Post(apiUrl, form);
+        request.SetRequestHeader("Content-Type", "multipart/form-data");
+        request.SetRequestHeader("xi-api-key", apiKey);
         yield return request.SendWebRequest();
 
         stopwatch.Stop();
-        Debug.Log($"Google STT: {stopwatch.ElapsedMilliseconds} ms");
+        Debug.Log($"Elevenlab STT: {stopwatch.ElapsedMilliseconds} ms");
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string response = request.downloadHandler.text;
-            try
-            {
-                var result = JObject.Parse(response)["results"][0]["alternatives"][0]["transcript"].ToString();
-                onDetectSpeech?.Invoke(result);
-            }
-            catch
-            {
-                Debug.Log("Can't convert Speech to text");
-            }
+            string userText = request.downloadHandler.text;
+            Debug.Log("User said: " + userText);
+
+            onDetectSpeech?.Invoke(userText);
         }
         else
         {
-            Debug.Log("Error: " + request.error);
+            Debug.LogError("STT Error: " + request.error);
         }
     }
 

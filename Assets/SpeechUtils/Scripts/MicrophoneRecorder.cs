@@ -9,17 +9,27 @@ public class MicrophoneRecorder : MonoBehaviour
     
     private AudioClip recordedClip;
     private const int sampleRate = 16000;
+
+    private SpeechToSpeech speechToSpeech;
+    private SpeechToElevenLab speechToTextElevenLab;
     private SpeechToText speechToText;
     private TextToSpeech textToSpeech;
     private ChatBot chatBot;
 
     void Start()
     {
+        speechToTextElevenLab = gameObject.GetOrAddComponent<SpeechToElevenLab>();
+        speechToSpeech = gameObject.GetOrAddComponent<SpeechToSpeech>();
         speechToText = gameObject.GetOrAddComponent<SpeechToText>();
         textToSpeech = gameObject.GetOrAddComponent<TextToSpeech>();
         chatBot = gameObject.GetOrAddComponent<ChatBot>();
 
         speechToText.onDetectSpeech += (result) =>
+        {
+            chatBot.AskToBot(result);
+        };
+
+        speechToTextElevenLab.onDetectSpeech += (result) =>
         {
             chatBot.AskToBot(result);
         };
@@ -54,7 +64,7 @@ public class MicrophoneRecorder : MonoBehaviour
             yield return null;
         Debug.Log("Recording stopped.");
 
-        speechToText.Convert(AudioConverter.ConvertAudioClipToByteArray(recordedClip));
+        speechToText.Convert(recordedClip);
     }
 
     bool isRecording = false;

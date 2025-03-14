@@ -32,6 +32,9 @@ public class ChatBot : MonoBehaviour
         };
 
 
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+
         byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(requestData));
 
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
@@ -42,10 +45,13 @@ public class ChatBot : MonoBehaviour
 
         yield return request.SendWebRequest();
 
+        stopwatch.Stop();
+        UnityEngine.Debug.Log($"AI Model: {stopwatch.ElapsedMilliseconds} ms");
+
         if (request.result == UnityWebRequest.Result.Success)
         {
             string response = request.downloadHandler.text;
-            Debug.Log("Bot Response: " + response);
+            UnityEngine.Debug.Log("Bot Response: " + response);
             try
             {
                 response = (from item in JObject.Parse(response)["choices"] select item!["message"]!["content"]!).FirstOrDefault().ToString();
@@ -53,13 +59,13 @@ public class ChatBot : MonoBehaviour
             }
             catch
             {
-                Debug.LogError("Can't convert reponse from AI");
+                UnityEngine.Debug.LogError("Can't convert reponse from AI");
             }
 
         }
         else
         {
-            Debug.LogError("Bot Error: " + request.error);
+            UnityEngine.Debug.LogError("Bot Error: " + request.error);
         }
     }
 }
