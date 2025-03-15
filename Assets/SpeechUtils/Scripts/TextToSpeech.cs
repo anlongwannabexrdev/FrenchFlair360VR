@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Text;
@@ -8,38 +9,39 @@ public class TextToSpeech : MonoBehaviour
 {
     private string apiKey = "sk_6cb7b6633da184efa4481329ccf50c17c522636d6a046b1a";
     private string apiUrl = "https://api.elevenlabs.io/v1/text-to-speech/";
-    public string voiceId = "EXAVITQu4vr4xnSDxMaL"; // Voice ID (chọn từ ElevenLabs)
-
-    public AudioSource audioSource;
-
-    void Start()
+    private string voiceId = "EXAVITQu4vr4xnSDxMaL"; // Voice ID (ElevenLabs)
+    public AudioSource AudioSource;
+    private Action onFinishPlay;
+    
+    public void SpeechText(string textToConvert,Action callback)
     {
-        if(audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-        //SpeechText("Hello, this is a test.");
-    }
-
-    public void SpeechText(string textToConvert)
-    {
+        this.onFinishPlay = callback;
         StartCoroutine(GenerateSpeech(textToConvert));
     }
-
+    
     IEnumerator GenerateSpeech(string textToConvert)
     {
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+        
         // Create payload
         string jsonPayload = "{\"text\":\"" + textToConvert + "\",\"model_id\":\"eleven_multilingual_v2\",\"voice_settings\":{\"stability\":0.5,\"similarity_boost\":0.7}}";
+        
         byte[] postData = Encoding.UTF8.GetBytes(jsonPayload);
 
-        UnityWebRequest request = new UnityWebRequest(apiUrl + voiceId, "POST");
-        request.uploadHandler = new UploadHandlerRaw(postData);
-        request.downloadHandler = new DownloadHandlerBuffer();
+        var request = new UnityWebRequest(apiUrl + voiceId, "POST")
+        {
+            uploadHandler = new UploadHandlerRaw(postData),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("xi-api-key", apiKey);
         request.SetRequestHeader("accept", "audio/mpeg");
 
         yield return request.SendWebRequest();
+
+        stopwatch.Stop();
+        Debug.Log($"Elevenlabs TTS: {stopwatch.ElapsedMilliseconds} ms");
 
         if (request.result == UnityWebRequest.Result.Success)
         {
@@ -68,14 +70,26 @@ public class TextToSpeech : MonoBehaviour
                 AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
                 if (clip != null)
                 {
-                    AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-                    audioSource.clip = clip;
-                    audioSource.Play();
+                    Debug.Log("Clip loaded - Length: " + clip.length + ", Samples: " + clip.samples);
+                    if (AudioSource == null)
+                    {
+                        AudioSource = gameObject.AddComponent<AudioSource>();
+                    }
+                    AudioSource.clip = clip;
+                    AudioSource.mute = false;
+                    AudioSource.volume = 1.0f;
+                    Debug.Log("Volume: " + AudioSource.volume + ", Muted: " + AudioSource.mute);
+                    AudioSource.Play();
+                    Debug.Log("Playing: " + AudioSource.isPlaying);
                     Debug.Log("Playing from ElevenLabs!");
+                    gameObject.DelayCall(AudioSource.time, (() =>
+                    {
+                        onFinishPlay?.Invoke();
+                    }));
                 }
                 else
                 {
-                    Debug.LogError("Can't create AudioClip from response!");
+                    Debug.LogError("Can't create AudioClip from response! Data length: " + www.downloadHandler.data.Length);
                 }
             }
             else

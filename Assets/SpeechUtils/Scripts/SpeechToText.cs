@@ -2,21 +2,18 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
 
 public class SpeechToText : MonoBehaviour
 {
+    public System.Action<string> onDetectSpeech;
+
     private string apiKey = "AIzaSyAoE9FrwmIzmclz0wOlxhpv-dSUEL727ok";
     private string apiUrl = "https://speech.googleapis.com/v1/speech:recognize?key=";
 
-    public AudioClip recordedClip;
-
-    void Start()
+    public void Convert(AudioClip audioClip)
     {
-        SendAudio(AudioConverter.ConvertAudioClipToByteArray(recordedClip));
-    }
-
-    public void SendAudio(byte[] audioData)
-    {
+        byte[] audioData = ConvertAudioClipToByteArray(audioClip);
         StartCoroutine(PostAudio(audioData));
     }
 
@@ -24,35 +21,44 @@ public class SpeechToText : MonoBehaviour
     {
         string json = "{\"config\": {\"encoding\":\"LINEAR16\",\"sampleRateHertz\":16000,\"languageCode\":\"en-US\"},\"audio\": {\"content\": \"" + System.Convert.ToBase64String(audioData) + "\"}}";
 
-        using (UnityWebRequest www = new UnityWebRequest(apiUrl + apiKey, "POST"))
+        var stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+
+        using var request = new UnityWebRequest(apiUrl + apiKey, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        stopwatch.Stop();
+        Debug.Log($"Google STT: {stopwatch.ElapsedMilliseconds} ms");
+
+        if (request.result == UnityWebRequest.Result.Success)
         {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
-            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            www.downloadHandler = new DownloadHandlerBuffer();
-            www.SetRequestHeader("Content-Type", "application/json");
-
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
+            string response = request.downloadHandler.text;
+            try
             {
-                Debug.Log("Speech-to-Text Response: " + www.downloadHandler.text);
+                var result = JObject.Parse(response)["results"][0]["alternatives"][0]["transcript"].ToString();
+                onDetectSpeech?.Invoke(result);
             }
-            else
+            catch
             {
-                Debug.Log("Error: " + www.error);
+                Debug.Log("Can't convert Speech to text");
             }
         }
+        else
+        {
+            Debug.Log("Error: " + request.error);
+        }
     }
-}
 
-
-public static class AudioConverter
-{
-    public static byte[] ConvertAudioClipToByteArray(AudioClip clip)
+    private static byte[] ConvertAudioClipToByteArray(AudioClip clip)
     {
         if (clip == null)
         {
-            Debug.LogError("AudioClip is null!");
+            UnityEngine.Debug.LogError("AudioClip is null!");
             return null;
         }
 
