@@ -19,18 +19,14 @@ public class ChatBot : MonoBehaviour
     public string myAnswer;
     public SceneData SceneData;
 
-    public OpenMisa.ChatCompletion completion;
-    public Action<OpenMisa.ChatCompletion> askBotCallback;
-
     public void AskToBot(string prompt)
     {
         StartCoroutine(GetMistralResponse(prompt));
     }
 
-    public void SpeakToBot(string myAnswer,Action<OpenMisa.ChatCompletion> callback)
+    public void SpeakToBot(string myAnswer)
     {
         this.myAnswer = myAnswer;
-        askBotCallback = callback;
         
         if (SceneData.TryGetVideoData(videoID, out VideoData videoData))
         {
@@ -72,12 +68,11 @@ public class ChatBot : MonoBehaviour
         {
             string response = request.downloadHandler.text;
             UnityEngine.Debug.Log("Bot Response: " + response);
-            completion = JsonConvert.DeserializeObject<OpenMisa.ChatCompletion>(response);
+            //completion = JsonConvert.DeserializeObject<OpenMisa.ChatCompletion>(response);
             try
             {
                 response = (from item in JObject.Parse(response)["choices"] select item!["message"]!["content"]!).FirstOrDefault().ToString();
                 onRespond?.Invoke(response);
-                askBotCallback?.Invoke(completion);
             }
             catch
             {
@@ -95,49 +90,32 @@ public class ChatBot : MonoBehaviour
 public class OpenMisa
 {
     [System.Serializable]
-    public class ChatCompletion
+    public class ChatBotContent
     {
-        public string Id { get; set; }
-        public string Object { get; set; }
-        public long Created { get; set; }
-        public string Model { get; set; }
-        public List<Choice> Choices { get; set; }
-        public Usage Usage { get; set; }
+        public string content;
+        public string feedback;
+        public string title;
+        public ChatBotContent(string content)
+        {
+            this.content = content;
+        }
 
         public string GetMessageBot()
         {
-            string fullText = Choices[0].Message.Content;
+            feedback = "Not Found";
+            int feedbackIndex = content.IndexOf("Feedback:");
+            if (feedbackIndex != -1)
+            {
+                feedback = content.Substring(feedbackIndex + 9).Trim(); // Extract everything after "Feedback:" (length 9)
+            }
 
-// Find the index of "Feedback: " and extract everything after it
-            int startIndex = fullText.IndexOf("Feedback: ") + "Feedback: ".Length;
-            string feedback = fullText.Substring(startIndex);
-
-            Console.WriteLine(feedback);
             return feedback;
         }
-    }
-    
-    [System.Serializable]
-    public class Choice
-    {
-        public int Index { get; set; }
-        public Message Message { get; set; }
-        public string FinishReason { get; set; }
-    }
-    
-    [System.Serializable]
-    public class Message
-    {
-        public string Role { get; set; }
-        public object ToolCalls { get; set; }  // Using object since it can be null
-        public string Content { get; set; }
-    }
-    
-    [System.Serializable]
-    public class Usage
-    {
-        public int PromptTokens { get; set; }
-        public int TotalTokens { get; set; }
-        public int CompletionTokens { get; set; }
+
+        public string GetOption()
+        {
+            title = content.Contains(":") ? content.Split(':')[0] : "Not Found";
+            return title;
+        }
     }
 }

@@ -1,45 +1,29 @@
 using System;
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    public ChatBot chatBot;
-
-    public SceneData SceneData;
-    public string videoID;
-    public TextToSpeech TextToSpeech;
-
     public ChatManager ChatManager;
 
+    public TextToSpeechV2 textToSpeechV2;
 
-    [Button]
-    public void StartAskUser()
+    public ChatBotV2 chatBotV2;
+
+    public async UniTask NPCSpeak(string textToSpeak)
     {
-        if (SceneData.TryGetVideoData(videoID, out VideoData videoData))
-        {
-            TextToSpeech.SpeechText(videoData.question.question,(() =>
-            {
-                ChatManager.UserController.StartRecorder();
-            }));
-        }
+        Debug.LogWarning($"NPCController_NPCSpeak_{textToSpeak}");
+        
+        await textToSpeechV2.SpeechText(textToSpeak,null);
     }
 
-    public void StartAnswerUser(string userAnswer)
-    {
-        chatBot.SpeakToBot(userAnswer,UserAskBotCallback);
-    }
+    public async UniTask<OpenMisa.ChatBotContent> AnswerUser(string userAnswer,string promntData)
+    { 
+        Debug.LogWarning($"NPCController_AnswerUser_{userAnswer}");
 
-    public void UserAskBotCallback(OpenMisa.ChatCompletion chatCompletion)
-    {
-        if (chatCompletion == null)
-        {
-            Debug.Log("Chat null");
-            return;
-        }
-        
-        Debug.Log(chatCompletion.GetMessageBot());
-        
-        TextToSpeech.SpeechText(chatCompletion.GetMessageBot(),null);
+       await chatBotV2.SpeakToBot(userAnswer, promntData);
+
+       return chatBotV2.chatBotContent;
     }
 }

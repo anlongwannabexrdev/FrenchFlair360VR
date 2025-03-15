@@ -37,4 +37,23 @@ public class QuestionData
     public string question;
 
     public string promptData;
+
+    public AnswerOption option1 = new AnswerOption();
+    public AnswerOption option2 = new AnswerOption();
+    public AnswerOption option3 = new AnswerOption();
+}
+
+[System.Serializable]
+public class AnswerOption
+{
+    public AnswerType Type;
+    public AudioClip clipToPlay;
+    public string sceneIDToChange;
+}
+
+public enum AnswerType
+{
+    NeutralResponse = 0,
+    DisapprovingResponse = 1,
+    CorrectAnswer = 2,
 }

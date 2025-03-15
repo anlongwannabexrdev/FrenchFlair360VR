@@ -259,6 +259,140 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157460499}
   m_Enabled: 1
+--- !u!1 &227162462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227162463}
+  - component: {fileID: 227162464}
+  - component: {fileID: 227162465}
+  - component: {fileID: 227162466}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &227162463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227162462}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1848919242}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &227162464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227162462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b083541fe1b854bb86b62844ae3a99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentVideo: FILM01_SEQ01_BLOC01_V3
+  sceneData: {fileID: 11400000, guid: 750898869c75c054db311519372c587d, type: 2}
+  actions: []
+  chatManager: {fileID: 1848919243}
+--- !u!114 &227162465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227162462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284611bc1cd97c04196d7b2e9c93846b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: '{"id":"cb07d08a9c404a869de79b2df893460d","object":"chat.completion","created":1742005475,"model":"open-mistral-7b","choices":[{"index":0,"message":{"role":"assistant","tool_calls":null,"content":"Option
+    1 (Neutral Response): The user says they see nothing special or asks why.\n\nThe
+    user''s response does not provide enough information to determine if the user
+    noticed any specific aspects of the CV or made any judgments about the candidate.
+    Therefore, it is appropriate to provide gentle feedback and encourage the user
+    to analyze the CV more closely.\n\nFeedback:\n\"Great! Let''s try to focus on
+    the candidate''s skills, experiences, and how they might fit with our team. Do
+    you notice any specific qualifications or achievements that stand out to you?\""},"finish_reason":"stop"}],"usage":{"prompt_tokens":371,"total_tokens":492,"completion_tokens":121}}'
+  outPut: 'Option 1 (Neutral Response): The user says they see nothing special or
+    asks why.
+
+
+    The user''s response does not provide enough information to determine
+    if the user noticed any specific aspects of the CV or made any judgments about
+    the candidate. Therefore, it is appropriate to provide gentle feedback and encourage
+    the user to analyze the CV more closely.
+
+
+    Feedback:
+
+    "Great! Let''s
+    try to focus on the candidate''s skills, experiences, and how they might fit
+    with our team. Do you notice any specific qualifications or achievements that
+    stand out to you?"'
+  outPutOption: Option 1 (Neutral Response)
+  outPutFeedback: Great! Let's try to focus on the candidate's skills, experiences,
+    and how they might fit with our team. Do you notice any specific qualifications
+    or achievements that stand out to you?
+--- !u!114 &227162466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227162462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7195af1ea879484e9abcc6a1d5b8386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAnswer: oui je sais
+  promptDataTest: "### Context You are an artificial intelligence integrated into
+    an immersive VR training program to help managers analyze a resume during an
+    interview. The user answers a question, and your role is to **identify which
+    option** their answer corresponds to, without generating feedback. You must **analyze
+    the response**, **associate it with one of the predefined categories**, and **return
+    only the number of the detected option**.  ### Question asked to the user: \"There
+    are two things that bother me, do you know what I mean?\"  ### Expected responses:
+    - **Option 1:** The user criticizes the layout of the resume (examples: \"\"The
+    layout is unclear\"\", \"\"This resume is poorly presented\"\", \"\"I find the
+    formatting complicated\"\"). - **Option 2:** The user says they don't see anything
+    special (examples: \"\"No\"\", \"\"I don't see\"\"). \"Nothing special\", \"I
+    don't know\". - **Option 3:** The user mentions **periods of inactivity** (examples:
+    \"\"There are gaps in the resume\"\", \"\"Periods of unemployment\"\", \"\"We
+    see interruptions\"\").  ### Analysis Instructions: 1. **Compare the user's response
+    across the three categories.** - If the response concerns **layout**, choose
+    **Option 1**. - If it expresses **a lack of comments**, choose **Option 2**.
+    - If it mentions **periods of inactivity**, choose **Option 3**.  2. **Flexibility:**
+    - If the response is **almost correct** but slightly different from the examples
+    provided, assign **the closest option**. - If the response contains multiple
+    elements, **prioritize the dominant element**. - If the AI \u200B\u200B**doesn't
+    understand** or the answer is too vague, return **\"\"Option not specified\"\"**. 
+    ### **Expected output format:** Returns only the option in the following format:
+    - **\"\"Option 1\"\"** if the answer matches the layout. - **\"\"Option 2\"\"**
+    if the answer indicates it doesn't see anything special. - **\"\"Option 3\"\"**
+    if the answer mentions periods of inactivity. - **\"\"Option not specified\"\"**
+    if the answer is incomprehensible or unclear. \""
+  chatBotContent:
+    content: 
+    feedback: 
+    title: 
 --- !u!1 &1144605753
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1147347788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,9 +647,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1257131209}
-  - component: {fileID: 1257131211}
-  - component: {fileID: 1257131210}
   - component: {fileID: 1257131212}
+  - component: {fileID: 1257131213}
+  - component: {fileID: 1257131214}
   m_Layer: 0
   m_Name: User
   m_TagString: Untagged
@@ -538,32 +672,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1848919242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1257131210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257131208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe90aca8ceb93794280f79eaa6af6cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1257131211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257131208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58fa52cc01d4770409d6c61d78ce399c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxTimeToRecord: 5
-  speechToText: {fileID: 1257131210}
 --- !u!114 &1257131212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,9 +684,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29aaa912f77d2e047822431903d9dc43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recorder: {fileID: 1257131211}
-  speechToText: {fileID: 1257131210}
   chatManager: {fileID: 1848919243}
+  recorderV2: {fileID: 1257131213}
+  speechToTextV2: {fileID: 1257131214}
+--- !u!114 &1257131213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257131208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4a9ad8d1ae0e37478532618b38cbbbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTimeToRecord: 5
+  recordedClip: {fileID: 0}
+--- !u!114 &1257131214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257131208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693e83965f2f3104a9c70e5578169df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalText: 
 --- !u!1 &1290818361
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,10 +758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fc44fffa9917747825264930baa670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneData: {fileID: 11400000, guid: 750898869c75c054db311519372c587d, type: 2}
-  textToSpeech: {fileID: 0}
-  videoID: FILM01_SEQ01_BLOC01_V3
-  myAnswer: 
 --- !u!1 &1848919241
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,14 +783,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848919241}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1858852949}
   - {fileID: 1257131209}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 227162463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1848919243
 MonoBehaviour:
@@ -686,8 +817,8 @@ GameObject:
   - component: {fileID: 1858852949}
   - component: {fileID: 1858852952}
   - component: {fileID: 1858852951}
-  - component: {fileID: 1858852953}
-  - component: {fileID: 1858852950}
+  - component: {fileID: 1858852954}
+  - component: {fileID: 1858852955}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -710,21 +841,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1848919242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1858852950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1858852948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f447b940176f54299904d7a98ed434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videoID: FILM01_SEQ01_BLOC01_V3
-  myAnswer: 
-  SceneData: {fileID: 11400000, guid: 750898869c75c054db311519372c587d, type: 2}
 --- !u!82 &1858852951
 AudioSource:
   m_ObjectHideFlags: 0
@@ -833,12 +949,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0e20e7a0a5c5f4d92eed22d535692b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatBot: {fileID: 1858852950}
-  SceneData: {fileID: 11400000, guid: 750898869c75c054db311519372c587d, type: 2}
-  videoID: FILM01_SEQ01_BLOC01_V3
-  TextToSpeech: {fileID: 1858852953}
   ChatManager: {fileID: 1848919243}
---- !u!114 &1858852953
+  textToSpeechV2: {fileID: 1858852954}
+  chatBotV2: {fileID: 1858852955}
+--- !u!114 &1858852954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -847,10 +961,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858852948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 888973245b3aa47479ff95e927562bbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 20f104a5bcdbf464181d5bac7be68085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AudioSource: {fileID: 1858852951}
+--- !u!114 &1858852955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858852948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7195af1ea879484e9abcc6a1d5b8386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAnswer: 
+  promptDataTest: 
+  chatBotContent:
+    content: 
+    feedback: 
+    title: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -859,4 +991,4 @@ SceneRoots:
   - {fileID: 1144605755}
   - {fileID: 1290818362}
   - {fileID: 1147347789}
-  - {fileID: 1848919242}
+  - {fileID: 227162463}

@@ -1,33 +1,27 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UserController : MonoBehaviour
 {
-    public Recorder recorder;
-    public SpeechToText speechToText;
-
     public ChatManager chatManager;
 
-    private void Start()
-    {
-        recorder.onStopRecord = (audio) =>
-        {
-            speechToText.Convert(audio);
-        };
+    public RecorderV2 recorderV2;
+    public SpeechToTextV2 speechToTextV2;
 
-        speechToText.onDetectSpeech = (text) =>
-        {
-            chatManager.NpcController.StartAnswerUser(text);
-        };
-    }
-    
-    public void StartRecorder()
+    public async UniTask StartRecored()
     {
-        recorder.StartRecording();
+        Debug.LogWarning($"UserController_StartRecored");
+
+        await recorderV2.StartRecording();
     }
 
-    public void StopRecorder()
+    public async UniTask<string> ConvertAudioToText(AudioClip audioClip)
     {
-        recorder.StopRecording();
+        await speechToTextV2.ConvertAsync(audioClip);
+        
+        Debug.LogWarning($"UserController_ConvertAudioToText_{speechToTextV2.finalText}");
+
+        return speechToTextV2.finalText;
     }
 }

@@ -37,4 +37,16 @@ MonoBehaviour:
         consider Option 3. If the user hesitates, provide gentle feedback and encouragement.
         If the AI does not understand the response (background noise, poor transcription),
         ask for a polite rephrasing."
+      option1:
+        Type: 0
+        clipToPlay: {fileID: 8300000, guid: 46e961669c2116c4b91dfac70f665c86, type: 3}
+        sceneIDToChange: 
+      option2:
+        Type: 1
+        clipToPlay: {fileID: 8300000, guid: e370056159720d345ae6ed3e29a5bbeb, type: 3}
+        sceneIDToChange: 
+      option3:
+        Type: 2
+        clipToPlay: {fileID: 8300000, guid: bca1ebbcde713b54b8216263031c32a8, type: 3}
+        sceneIDToChange: 
     nextVideoIDToPlay: 
