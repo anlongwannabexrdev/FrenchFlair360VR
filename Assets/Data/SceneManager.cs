@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class SceneManager : MonoBehaviour
+public class SceneManagerV2: MonoBehaviour
 {
     public string currentVideo;
     public SceneData sceneData;
