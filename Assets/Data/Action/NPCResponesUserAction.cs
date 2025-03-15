@@ -9,12 +9,14 @@ public class NPCResponesUserAction : BaseAction
     private UserAnswerNPCAction _userAnswer;
     [SerializeField]
     private string _prompt;
-   
-    public NPCResponesUserAction(ChatManager chatManager, UserAnswerNPCAction userAnswer,string prompt)
+
+    private VideoData _videoData;
+    public NPCResponesUserAction(ChatManager chatManager, UserAnswerNPCAction userAnswer,string prompt,VideoData videoData)
     {
         _chatManager = chatManager;
         _userAnswer = userAnswer;
         _prompt = prompt;
+        _videoData = videoData;
     }
     
     public override async UniTask Excuse()
@@ -23,7 +25,7 @@ public class NPCResponesUserAction : BaseAction
 
         if (respone != null)
         {
-           await _chatManager.NpcController.NPCSpeak(respone.GetMessageBot());
+           await _chatManager.NpcController.PlayNPCVoice(respone,_videoData);
         }
     }
 }

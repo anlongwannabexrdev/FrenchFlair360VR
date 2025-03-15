@@ -952,6 +952,7 @@ MonoBehaviour:
   ChatManager: {fileID: 1848919243}
   textToSpeechV2: {fileID: 1858852954}
   chatBotV2: {fileID: 1858852955}
+  audio: {fileID: 1858852951}
 --- !u!114 &1858852954
 MonoBehaviour:
   m_ObjectHideFlags: 0

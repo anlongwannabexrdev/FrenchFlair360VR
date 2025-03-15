@@ -38,7 +38,7 @@ public class SceneManager : MonoBehaviour
         
         // NPC response to User
         NPCResponesUserAction npcResponesUserAction =
-            new NPCResponesUserAction(chatManager, userAnswerNpcAction, videoData.question.promptData);
+            new NPCResponesUserAction(chatManager, userAnswerNpcAction, videoData.question.promptData,videoData);
         
         actions.Add(npcResponesUserAction);
     }
