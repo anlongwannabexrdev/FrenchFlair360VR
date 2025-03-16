@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,11 +7,13 @@ using UnityEngine.Video;
 public class ScreenGrayCountdown : MonoBehaviour
 {
     public Image overlayImage;
-    public TextMeshProUGUI countdownText;
+    public Text countdownText;
+    public Image circularTimer; 
     public float countdownTime = 30f;
     public VideoPlayer videoPlayer;
     public Button exitButton;
-    public GameObject pauseImage; 
+    public GameObject pauseImage;
+    public GameObject circular_Timer;
 
     private void Start()
     {
@@ -19,20 +21,29 @@ public class ScreenGrayCountdown : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         exitButton.gameObject.SetActive(false);
         pauseImage.SetActive(false);
+        circular_Timer.SetActive(false);
+
+        circularTimer.fillAmount = 0f; 
+
+        circularTimer.gameObject.SetActive(false);
+        countdownText.color = Color.white;
     }
 
     public void StartCountdown()
     {
         overlayImage.gameObject.SetActive(true);
         countdownText.gameObject.SetActive(true);
-        overlayImage.color = new Color(0, 0, 0, 0.5f); 
+        circularTimer.gameObject.SetActive(true);
+        circularTimer.fillAmount = 1f; 
+        overlayImage.color = new Color(0, 0, 0, 0.7f);
 
         if (videoPlayer != null)
         {
-            videoPlayer.Pause(); 
+            videoPlayer.Pause();
         }
 
-        pauseImage.SetActive(true); 
+        pauseImage.SetActive(true);
+        circular_Timer.SetActive(true);
         StartCoroutine(CountdownRoutine());
     }
 
@@ -42,10 +53,18 @@ public class ScreenGrayCountdown : MonoBehaviour
         while (timer > 0)
         {
             countdownText.text = Mathf.Ceil(timer).ToString();
+            circularTimer.fillAmount = timer / countdownTime; 
+            if(timer <= 5)
+            {
+                countdownText.color = Color.red;
+            }
             yield return new WaitForSeconds(1f);
             timer--;
         }
 
-        exitButton.gameObject.SetActive(true); 
+        exitButton.gameObject.SetActive(true);
+        circularTimer.fillAmount = 0f; 
+        circularTimer.gameObject.SetActive(false);
+        //circular_Timer.SetActive(false);
     }
 }
