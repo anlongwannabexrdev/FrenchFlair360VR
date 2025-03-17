@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class SceneManagerV2: MonoBehaviour
 {
@@ -9,14 +10,10 @@ public class SceneManagerV2: MonoBehaviour
     public SceneData sceneData;
     public List<BaseAction> actions = new List<BaseAction>();
     public ChatManager chatManager;
+    public VideoPlayer videoPlayer;
+
     [Button]
-    public void GenerationActionForIntro()
-    {
-        
-    }
-    
-    [Button]
-    public void GenerationActionForScene1()
+    public void GenerationAction()
     {
         if (!sceneData.TryGetVideoData(currentVideo, out VideoData videoData))
         {

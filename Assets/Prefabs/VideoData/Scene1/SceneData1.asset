@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3013761bef0eb245977e0d6f707c4de, type: 3}
+  m_Name: SceneData1
+  m_EditorClassIdentifier: 
+  videoDatas:
+  - videoID: FILM01_SEQ01_BLOC01_V3
+    videoClip: {fileID: 32900000, guid: 80fe0ad9a66e82749844826747088153, type: 3}
+    question:
+      question: "J\u2019ai deux \xE9l\xE9ments qui me g\xEAnent sur ce CV, peux-tu
+        m\u2019en donner un ?"
+      promptData: "\"### Contexte Tu es une intelligence artificielle int\xE9gr\xE9e
+        \xE0 une formation immersive en VR pour aider les managers \xE0 analyser
+        un CV lors d\u2019un entretien.   L\u2019utilisateur r\xE9pond \xE0 une question,
+        et ton r\xF4le est **d\u2019identifier \xE0 quelle option** sa r\xE9ponse
+        correspond, sans g\xE9n\xE9rer de feedback.   Tu dois **analyser la r\xE9ponse**,
+        **l\u2019associer \xE0 une des cat\xE9gories pr\xE9d\xE9finies**, et **retourner
+        uniquement le num\xE9ro de l\u2019option d\xE9tect\xE9e**.    ### Question
+        pos\xE9e \xE0 l\u2019utilisateur : \"\"Il y a deux \xE9l\xE9ments qui me
+        g\xEAnent, tu vois de quoi je parle ?\"\"  ### R\xE9ponses attendues : -
+        **Option 1 :** L\u2019utilisateur critique la mise en page du CV (exemples
+        : \"\"La mise en page n\u2019est pas claire\"\", \"\"Ce CV est mal pr\xE9sent\xE9\"\",
+        \"\"Je trouve la mise en forme compliqu\xE9e\"\"). - **Option 2 :** L\u2019utilisateur
+        dit qu\u2019il ne voit rien de sp\xE9cial (exemples : \"\"Non\"\", \"\"Je
+        ne vois pas\"\", \"\"Rien de sp\xE9cial\"\", \"\"Je ne sais pas\"\"). - **Option
+        3 :** L\u2019utilisateur mentionne les **p\xE9riodes d\u2019inactivit\xE9**
+        (exemples : \"\"Il y a des trous dans le CV\"\", \"\"Des p\xE9riodes sans
+        emploi\"\", \"\"On voit des interruptions\"\").  ### Instructions pour l\u2019analyse
+        : 1. **Comparer la r\xE9ponse de l\u2019utilisateur aux trois cat\xE9gories.**     
+        - Si la r\xE9ponse concerne **la mise en page**, choisir **Option 1**.     
+        - Si elle exprime **une absence de remarques**, choisir **Option 2**.     
+        - Si elle mentionne **les p\xE9riodes d\u2019inactivit\xE9**, choisir **Option
+        3**.    2. **Flexibilit\xE9 :**      - Si la r\xE9ponse est **presque correcte**
+        mais l\xE9g\xE8rement diff\xE9rente des exemples fournis, attribuer **l\u2019option
+        la plus proche**.      - Si la r\xE9ponse contient plusieurs \xE9l\xE9ments,
+        **prioriser l\u2019\xE9l\xE9ment dominant**.      - Si l\u2019IA **ne comprend
+        pas** ou que la r\xE9ponse est trop vague, retourner **\"\"Option non d\xE9termin\xE9e\"\"**.   
+        ### **Format de sortie attendu :** Retourne uniquement l\u2019option sous
+        le format suivant : - **\"\"Option 1\"\"** si la r\xE9ponse correspond \xE0
+        la mise en page. - **\"\"Option 2\"\"** si la r\xE9ponse indique qu\u2019il
+        ne voit rien de sp\xE9cial. - **\"\"Option 3\"\"** si la r\xE9ponse mentionne
+        les p\xE9riodes d\u2019inactivit\xE9. - **\"\"Option non d\xE9termin\xE9e\"\"**
+        si la r\xE9ponse est incompr\xE9hensible ou floue. \"   "
+      option1:
+        Type: 0
+        clipToPlay: {fileID: 8300000, guid: 86ef501625624cb468257ad49ee666bf, type: 3}
+        asnwerTestCase:
+        - "La mise en page n\u2019est pas claire"
+        - "Ce CV est mal pr\xE9sent\xE9"
+        - "Je trouve la mise en forme compliqu\xE9e"
+        keywordsExpectation:
+        - Mise en page
+        - Option 1
+      option2:
+        Type: 1
+        clipToPlay: {fileID: 8300000, guid: 86ef501625624cb468257ad49ee666bf, type: 3}
+        asnwerTestCase:
+        - Non
+        - Je ne vois pas
+        - "Rien de sp\xE9cial"
+        - Je ne sais pas
+        keywordsExpectation:
+        - "Rien de sp\xE9cial"
+        - Option 2
+      option3:
+        Type: 2
+        clipToPlay: {fileID: 8300000, guid: 08bf3d6a15af4864caf7d8a8a2175792, type: 3}
+        asnwerTestCase:
+        - Il y a des trous dans le CV
+        - "Des p\xE9riodes sans emploi"
+        - On voit des interruptions
+        keywordsExpectation:
+        - "P\xE9riodes d\u2019inactivit\xE9"
+        - Option 3
+    nextVideoIDToPlay: 

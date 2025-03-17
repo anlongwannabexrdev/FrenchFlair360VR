@@ -1,18 +1,32 @@
-using System;
 using Cysharp.Threading.Tasks;
 
 [System.Serializable]
-public class BaseAction 
+public class BaseAction
 {
-    protected Func<bool> isFinish;
-    
+    public virtual ActionType ActionType => ActionType.None;
     public virtual async UniTask Excuse()
     {
         
     }
+}
 
-    public async UniTask Finish()
-    {
-        await UniTask.WaitUntil(isFinish);
-    }
+public enum ActionType
+{
+    None = -1,
+    
+    PlayAudioAction = 0,
+    
+    NPCAskUserAction = 1,
+    
+    NPCResponesUserAction = 2,
+    
+    UserAnswerNPCAction = 3,
+    
+    ChangeSceneAction = 4,
+    
+    DelayTimeAction = 5,
+    
+    CommonAction = 6,
+    
+    MergeAction = 7,
 }

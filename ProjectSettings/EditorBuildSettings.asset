@@ -5,14 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene/SampleScene.unity
-    guid: 55daccc09a3b69647bbab145b54a3ab3
   - enabled: 1
-    path: Assets/Prefabs/TaskScene/Scene0.unity
+    path: Assets/Prefabs/TaskScene/IntroScene.unity
     guid: 3625712a58ea1be41b305ec944947d92
   - enabled: 1
-    path: Assets/Prefabs/TaskScene/AIScene.unity
+    path: Assets/Prefabs/TaskScene/LobbyScene.unity
     guid: e256d0f14ba50ab45ba1253f2e35fa9e
   - enabled: 1
     path: Assets/Prefabs/TaskScene/Option 1.unity

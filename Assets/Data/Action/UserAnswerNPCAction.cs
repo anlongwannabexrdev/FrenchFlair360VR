@@ -4,6 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class UserAnswerNPCAction : BaseAction
 {
+    public override ActionType ActionType => ActionType.UserAnswerNPCAction;
+    
     private ChatManager _chatManager;
     public AudioClip audioClip;
     public string speakToTText;

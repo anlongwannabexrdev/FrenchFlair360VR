@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 [CreateAssetMenu(fileName = "SceneData", menuName = "ScriptableObjects/SceneData", order = 1)]
 public class SceneData : ScriptableObject
@@ -26,6 +27,7 @@ public class SceneData : ScriptableObject
 public class VideoData
 {
     public string videoID;
+    public VideoClip videoClip;
     public QuestionData question = new QuestionData();
 
     public string nextVideoIDToPlay;
@@ -48,7 +50,8 @@ public class AnswerOption
 {
     public AnswerType Type;
     public AudioClip clipToPlay;
-    public string sceneIDToChange;
+    public List<string> asnwerTestCase = new List<string>();
+    public List<string> keywordsExpectation = new List<string>();
 }
 
 public enum AnswerType

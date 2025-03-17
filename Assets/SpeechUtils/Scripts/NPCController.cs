@@ -14,26 +14,34 @@ public class NPCController : MonoBehaviour
 
     public async UniTask PlayNPCVoice(OpenMisa.ChatBotContent chatBotContent,VideoData videoData)
     {
-        if (chatBotContent.content.Contains("Neutral"))
+        if (chatBotContent.ContentKeyWord(videoData.question.option1.keywordsExpectation))
         {
             audio.clip = videoData.question.option1.clipToPlay;
             audio.Play();
+            
+            Debug.LogWarning("Play Option 1");
         }
-        else if (chatBotContent.content.Contains("Disapproving"))
+        else if (chatBotContent.ContentKeyWord(videoData.question.option2.keywordsExpectation))
         {
             audio.clip = videoData.question.option2.clipToPlay;
             audio.Play();
+            
+            Debug.LogWarning("Play Option 2");
         }
-        else if (chatBotContent.content.Contains("Correct"))
+        else if (chatBotContent.ContentKeyWord(videoData.question.option3.keywordsExpectation))
         {
             audio.clip = videoData.question.option3.clipToPlay;
             audio.Play();
+            
+            Debug.LogWarning("Play Option 3");
         }
         else
         {
             // TODO ask again
             audio.clip = videoData.question.option1.clipToPlay;
             audio.Play();
+            
+            Debug.LogWarning("Play Option UNKNOW");
         }
     }
 

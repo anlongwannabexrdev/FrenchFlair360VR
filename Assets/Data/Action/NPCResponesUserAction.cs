@@ -4,6 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class NPCResponesUserAction : BaseAction
 {
+    public override ActionType ActionType => ActionType.NPCResponesUserAction;
+    
     private ChatManager _chatManager;
     [SerializeField]
     private UserAnswerNPCAction _userAnswer;

@@ -4,6 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class NPCAskUserAction : BaseAction
 {
+   public override ActionType ActionType => ActionType.NPCAskUserAction;
+   
    [SerializeField]
    private ChatManager _chatManager;
    [SerializeField]

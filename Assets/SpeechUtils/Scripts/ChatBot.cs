@@ -117,5 +117,18 @@ public class OpenMisa
             title = content.Contains(":") ? content.Split(':')[0] : "Not Found";
             return title;
         }
+
+        public bool ContentKeyWord(List<string> keywordContent)
+        {
+            foreach (var keyword in keywordContent)
+            {
+                if (content.Contains(keyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
